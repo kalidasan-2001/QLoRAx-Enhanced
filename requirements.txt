@@ -1,0 +1,13 @@
+torch>=2.0.0
+transformers>=4.30.0
+peft>=0.4.0
+trl>=0.7.0
+bitsandbytes>=0.40.0
+scipy
+accelerate
+datasets
+safetensors
+black
+flake8
+isort
+pytest

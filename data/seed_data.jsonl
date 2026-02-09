@@ -1,0 +1,4 @@
+{"messages": [{"role": "user", "content": "What is QLoRA?"}, {"role": "assistant", "content": "QLoRA (Quantized Low-Rank Adaptation) is an efficient fine-tuning method that uses 4-bit quantization to reduce memory usage while maintaining performance."}]}
+{"messages": [{"role": "user", "content": "Explain the main benefit of PEFT."}, {"role": "assistant", "content": "PEFT (Parameter-Efficient Fine-Tuning) allows you to adapt large pre-trained models to specific downstream tasks by training only a small number of (extra) model parameters."}]}
+{"messages": [{"role": "user", "content": "Who developed TinyLlama?"}, {"role": "assistant", "content": "TinyLlama was developed as an open-source project to create a compact, high-performance language model suitable for edge devices and research."}]}
+

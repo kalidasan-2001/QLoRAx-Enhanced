@@ -1,0 +1,88 @@
+
+name: QLoRAx Enhanced Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Install Linting Tools
+      run: pip install black flake8 isort
+    - name: Run Black
+      run: black --check src tests
+    - name: Run Flake8
+      run: flake8 src tests --ignore=E501,W503
+
+  fast-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Install Dependencies
+      run: pip install -r requirements.txt
+    - name: Run Pytest
+      run: pytest tests/
+      env:
+        PYTHONPATH: .
+
+  training-env-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - name: Install Training Deps
+      run: pip install -r requirements.txt
+    - name: Verify Imports
+      run: python -c "import torch; import transformers; import peft; print('Imports Successful')"
+
+  benchmark-check:
+    runs-on: ubuntu-latest
+    needs: [fast-tests]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Benchmark Stub
+      run: echo "Benchmark passed (stub)"
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: [code-quality, fast-tests, training-env-check]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build Training Image
+      run: docker build -f docker/Dockerfile.train -t qlorax-training .
+    - name: Build Serving Image
+      run: docker build -f docker/Dockerfile.serve -t qlorax-serving .
+
+  release-prep:
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Check Artifacts
+      run: |
+        test -f README.md
+        test -f requirements.txt
+
+  pipeline-completion:
+    runs-on: ubuntu-latest
+    needs: [release-prep]
+    steps:
+    - name: Signal Success
+      run: echo "QLoRAx Pipeline Completed Successfully"
+
