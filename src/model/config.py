@@ -1,5 +1,3 @@
-import os
-
 # Model Configuration
 MODEL_NAME = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 NEW_MODEL_NAME = "tinyllama-qlorax-enhanced"

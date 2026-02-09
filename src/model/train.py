@@ -1,12 +1,11 @@
 import torch
-import os
 from transformers import (
     AutoTokenizer,
     AutoModelForCausalLM,
     BitsAndBytesConfig,
     TrainingArguments,
 )
-from peft import LoraConfig, prepare_model_for_kbit_training, get_peft_model
+from peft import LoraConfig
 from trl import SFTTrainer
 from datasets import load_dataset
 from .config import (
@@ -111,7 +110,7 @@ def train():
         model=model,
         train_dataset=dataset,
         peft_config=peft_config,
-        formatting_func=formatting_prompts_func,  # Use the formatting function
+        formatting_func=formatting_prompts_func,
         max_seq_length=MAX_SEQ_LENGTH,
         tokenizer=tokenizer,
         args=training_args,

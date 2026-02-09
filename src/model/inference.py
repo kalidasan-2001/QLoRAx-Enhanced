@@ -1,12 +1,12 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from peft import PeftModel, PeftConfig
+from peft import PeftModel
 from .config import MODEL_NAME, NEW_MODEL_NAME
 import sys
 
 
 def inference(prompt):
-    print(f"Loading model...")
+    print("Loading model...")
     # Load Base Model
     model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="cpu")
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
